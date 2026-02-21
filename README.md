@@ -23,11 +23,12 @@ Se requería subir archivos a buckets específicos de S3. El sistema presentaba 
 ## Evidencia
 
 Carga exitosa en el Bucket 2:
-![Evidencia Bucket 2](img/backet2.png)
+![img](img/backet2.png)
 Resolución del desafío en el Bucket 3:
-![Evidencia Bucket 3](img/backet3.png)
+![img](img/backet3.png)
 ## Resultado
 **Conclusión:** Se confirmó que las políticas de bucket tienen prioridad. El acceso fue exitoso tras usar la identidad correcta.
 
 **Calificación Final: 15/15.**
-![Puntaje Final](img/final.png)
+![img](img/final.png)
+
