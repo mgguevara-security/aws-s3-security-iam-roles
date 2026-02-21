@@ -1,43 +1,35 @@
-# Security Gap Analysis - S3 & IAM Roles Lab
+# Análisis de Seguridad - S3 y Roles IAM
 
-## Description
-Análisis técnico sobre la gestión de accesos en Amazon S3, validando la interacción entre IAM Roles y Bucket Policies para prevenir fugas de datos.
+## Descripción
+Análisis técnico sobre la gestión de accesos en Amazon S3, validando la interacción entre IAM Roles y políticas de bucket para prevenir fugas de datos.
 
-## Scenario
-Se requería subir archivos críticos a buckets específicos de S3. El sistema presentaba restricciones de acceso basadas en políticas de recursos que bloqueaban incluso a usuarios con roles predefinidos, simulando un entorno de "Zero Trust".
+## Escenario
+Se requería subir archivos a buckets específicos de S3. El sistema presentaba restricciones basadas en políticas de recursos que bloqueaban el acceso, simulando un entorno de seguridad estricto.
 
-## Objectives
-- Validar la capacidad de subir objetos a S3 asumiendo roles específicos (IAM Switch Role).
-- Identificar y mitigar errores de acceso (403 Access Denied) causados por Bucket Policies restrictivas.
+## Objetivos
+- Validar la subida de objetos asumiendo roles específicos (IAM Switch Role).
+- Identificar y solucionar errores de acceso (403 Access Denied) por políticas restrictivas.
 
-## Tools Used
-* **AWS Console:** Gestión de S3 e IAM.
+## Herramientas Utilizadas
+* **Consola de AWS:** Gestión de S3 e IAM.
 * **IAM Roles:** Para la transición de identidades seguras.
-* **Markdown:** Para la documentación técnica del laboratorio.
+* **Markdown:** Para la documentación técnica.
 
-## Actions Performed
-* **Identificación de Roles:** Se utilizó el rol `BucketsAccessRole` para el acceso inicial al Bucket 2.
-* **Análisis de Errores:** Se detectó un bloqueo en el Bucket 3 debido a una política JSON que solo permitía el acceso al rol `OtherBucketAccessRole`.
-* **Escalada de Privilegios Autorizada:** Se realizó el cambio al rol correcto para completar la carga de archivos.
+## Acciones Realizadas
+* **Identificación de Roles:** Uso del rol `BucketsAccessRole` para el Bucket 2.
+* **Análisis de Errores:** Se detectó bloqueo en el Bucket 3 por política JSON.
+* **Solución:** Cambio al rol `OtherBucketAccessRole` para completar la carga.
 
-## Evidence
+## Evidencia
 
-Análisis de la carga exitosa en el Bucket 2 tras asumir el rol de desarrollo:
-
+Carga exitosa en el Bucket 2:
 ![Evidencia Bucket 2](img/backet2.png)
 
-Análisis de la resolución del desafío en el Bucket 3 aplicando la política de recurso correcta:
-
+Resolución del desafío en el Bucket 3:
 ![Evidencia Bucket 3](img/backet3.png)
 
-## Outcome
+## Resultado
+**Conclusión:** Se confirmó que las políticas de bucket tienen prioridad. El acceso fue exitoso tras usar la identidad correcta.
 
-**Conclusion:** Se confirmó que las políticas de bucket tienen prioridad sobre los permisos de IAM. El acceso fue exitoso solo tras alinear la identidad con la política del recurso.
-
-**Calificación Final:** 15/15 puntos obtenidos.
-
+**Calificación Final: 15/15.**
 ![Resultado Final](img/final.png)
-
-## Mitigation Strategies
-* Implementar el principio de menor privilegio (PoLP).
-* Auditar regularmente las Bucket Policies para evitar configuraciones erróneas que bloqueen el flujo de trabajo.
