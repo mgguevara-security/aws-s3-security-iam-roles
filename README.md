@@ -1,46 +1,43 @@
-Informe de Laboratorio: Seguridad en Amazon S3 y Roles IAM
+# Security Gap Analysis - S3 & IAM Roles Lab
 
-1\. Resumen Ejecutivo
+## Description
+Análisis técnico sobre la gestión de accesos en Amazon S3, validando la interacción entre IAM Roles y Bucket Policies para prevenir fugas de datos.
 
-Este laboratorio demuestra la implementación de controles de acceso en AWS mediante el uso de identidades de IAM y políticas basadas en recursos. Se validó cómo las políticas de bucket pueden restringir acciones incluso cuando se poseen roles con permisos generales.
+## Scenario
+Se requería subir archivos críticos a buckets específicos de S3. El sistema presentaba restricciones de acceso basadas en políticas de recursos que bloqueaban incluso a usuarios con roles predefinidos, simulando un entorno de "Zero Trust".
 
+## Objectives
+- Validar la capacidad de subir objetos a S3 asumiendo roles específicos (IAM Switch Role).
+- Identificar y mitigar errores de acceso (403 Access Denied) causados por Bucket Policies restrictivas.
 
+## Tools Used
+* **AWS Console:** Gestión de S3 e IAM.
+* **IAM Roles:** Para la transición de identidades seguras.
+* **Markdown:** Para la documentación técnica del laboratorio.
 
-2\. Tareas Realizadas y Evidencias
+## Actions Performed
+* **Identificación de Roles:** Se utilizó el rol `BucketsAccessRole` para el acceso inicial al Bucket 2.
+* **Análisis de Errores:** Se detectó un bloqueo en el Bucket 3 debido a una política JSON que solo permitía el acceso al rol `OtherBucketAccessRole`.
+* **Escalada de Privilegios Autorizada:** Se realizó el cambio al rol correcto para completar la carga de archivos.
 
-Tarea 5: Acceso al Bucket 2 mediante IAM Roles
+## Evidence
 
-Proceso: Se realizó la transición de la identidad devuser al rol BucketsAccessRole.
+Análisis de la carga exitosa en el Bucket 2 tras asumir el rol de desarrollo:
 
+![Evidencia Bucket 2](img/backet2.png)
 
+Análisis de la resolución del desafío en el Bucket 3 aplicando la política de recurso correcta:
 
-Resultado: Se obtuvo la autorización para cargar el archivo Image2.jpg exitosamente.
+![Evidencia Bucket 3](img/backet3.png)
 
+## Outcome
 
+**Conclusion:** Se confirmó que las políticas de bucket tienen prioridad sobre los permisos de IAM. El acceso fue exitoso solo tras alinear la identidad con la política del recurso.
 
-Tarea 6: Desafío de Política de Bucket (Bucket 3)
+**Calificación Final:** 15/15 puntos obtenidos.
 
-Conflicto: El acceso al bucket3 estaba denegado por una política JSON que exigía específicamente el rol OtherBucketAccessRole.
+![Resultado Final](img/final.png)
 
-
-
-Solución: Se utilizó la función Switch Role para adoptar la identidad requerida por el recurso.
-
-
-
-Resultado: La carga del objeto fue permitida tras la validación de la política del bucket.
-
-
-
-3\. Conclusión y Calificación Final
-
-Se logró comprender que la seguridad en AWS es una capa combinada: la identidad debe tener permiso y el recurso debe permitir esa identidad.
-
-
-
-Puntaje Total: 15/15.
-
-
-
-!\[Puntaje Final](final.png)
-
+## Mitigation Strategies
+* Implementar el principio de menor privilegio (PoLP).
+* Auditar regularmente las Bucket Policies para evitar configuraciones erróneas que bloqueen el flujo de trabajo.
